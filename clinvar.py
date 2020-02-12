@@ -1,5 +1,5 @@
 """
- Compary a DNA kit (23andMe, AncestryDNA, 
+ Compare a DNA kit (23andMe, AncestryDNA, etc) with the Clinvar database
 
 vcf line:
 
@@ -8,8 +8,6 @@ vcf line:
 ter;CLNSIG=Likely_benign;CLNVC=single_nucleotide_variant;CLNVCSO=SO:0001483;GENEINFO=SAMD11:1483
 98;MC=SO:0001583|missense_variant;ORIGIN=1
 """
-
-import csv
 
 
 class dnadata(object):
@@ -21,14 +19,34 @@ class dnadata(object):
 
 
 class vcf(object):
-    def __init__(self, name):
-        with open(name) as f:
-            for line in f.readlines():
-                line_a = line.split()
+    base_url = 'ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37'
 
-    def download(self, name=None):
-        """download current or specified version of clinvar database"""
-        import requests
+    def process_file(self, name):
+        """process file in vcf format"""
         pass
-                
+
+    def process(self, stream):
+        """process stream in vcf format"""
+        pass
+
+    def __init__(self, name=None):
+        pass
+
+    def latest(self):
+        """download latest available copy of clinvar database in vcf format"""
+        import requests
+        import requests_ftp
+        import gzip
+
+        requests_ftp.monkeypatch_session()
+        with requests.Session() as sess:
+            resp = sess.get('{}/clinvar.vcf.gz'.format(self.base_url))
+
+        return gzip.decompress(resp.content)
+
+    def download(self, name=None, workdir=None):
+        """download current or specified version of clinvar database"""
+        pass
+
+
 ## EOF ##
