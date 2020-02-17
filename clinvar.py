@@ -47,6 +47,29 @@ class vcf(object):
 
         return vcf
 
+    def simple_dict(self, vcf):
+        """return a dictionary using chromosome and position in chromosome as keys"""
+        vcf_dict = {}
+
+        for line in vcf:
+            chrm = line.pop(0)
+            position = line.pop(0)
+
+            #remove ORIGIN=1, we consider it the default
+            line_pos = 0
+            for item in line:
+                if item == 'ORIGIN=1':
+                    line.pop(line_pos)
+
+                line_pos += 1
+
+            if vcf_dict.get(chrm) is None:
+                vcf_dict[chrm] = {}
+
+            vcf_dict[chrm][position] = line
+
+        return vcf_dict
+
     def __init__(self, name=None):
         pass
 
