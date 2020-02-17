@@ -23,11 +23,29 @@ class vcf(object):
 
     def process_file(self, name):
         """process file in vcf format"""
-        pass
+
+        with open(name) as fh:
+            vcf = self.process(fh.read())
+
+        return vcf
 
     def process(self, stream):
         """process stream in vcf format"""
-        pass
+        vcf = []
+
+        vcf_raw = stream.splitlines()
+
+        for line in vcf_raw:
+            line_a = line.split()
+            if '#' in line[0]: continue
+
+            vcf_line = []
+            for i in [i.split(';') for i in line_a]:
+                vcf_line += i
+
+            vcf.append(vcf_line)
+
+        return vcf
 
     def __init__(self, name=None):
         pass
