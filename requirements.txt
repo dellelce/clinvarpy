@@ -1,3 +1,4 @@
 PyYAML
 requests
 requests-ftp
+docopt-subcommands
