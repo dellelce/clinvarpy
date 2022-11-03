@@ -22,7 +22,7 @@ example vcf line:
 class dnadata(object):
     """Reader to personal DNA Data."""
 
-    dna_providers = ['myheritage', 'livingdna', 'ancestry', '23andme']
+    dna_providers = ["myheritage", "livingdna", "ancestry", "23andme"]
 
     def __init__(self, name, provider=None):
         """Read specified dna file."""
@@ -32,7 +32,7 @@ class dnadata(object):
 class vcf(object):
     """Wrapper class to the Clinvar database in VCF format."""
 
-    base_url = 'ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37'
+    base_url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37"
 
     def process_file(self, name):
         """Process file in vcf format."""
@@ -56,10 +56,11 @@ class vcf(object):
 
         for line in vcf_raw:
             line_a = line.split()
-            if '#' in line[0]: continue
+            if "#" in line[0]:
+                continue
 
             vcf_line = []
-            for i in [i.split(';') for i in line_a]:
+            for i in [i.split(";") for i in line_a]:
                 vcf_line += i
 
             vcf.append(vcf_line)
@@ -74,10 +75,10 @@ class vcf(object):
             chrm = line.pop(0)
             position = line.pop(0)
 
-            #remove ORIGIN=1, we consider it the default
+            # remove ORIGIN=1, we consider it the default
             line_pos = 0
             for item in line:
-                if item == 'ORIGIN=1':
+                if item == "ORIGIN=1":
                     line.pop(line_pos)
 
                 line_pos += 1
@@ -102,7 +103,7 @@ class vcf(object):
 
         requests_ftp.monkeypatch_session()
         with requests.Session() as sess:
-            resp = sess.get('{}/clinvar.vcf.gz'.format(self.base_url))
+            resp = sess.get(f"{self.base_url}/clinvar.vcf.gz")
 
         self.rawdata = gzip.decompress(resp.content)
 
