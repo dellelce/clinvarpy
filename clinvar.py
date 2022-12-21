@@ -19,7 +19,7 @@ example vcf line:
 """
 
 
-class dnadata(object):
+class dnadata:
     """Reader to personal DNA Data."""
 
     dna_providers = ["myheritage", "livingdna", "ancestry", "23andme"]
@@ -29,7 +29,7 @@ class dnadata(object):
         pass
 
 
-class vcf(object):
+class vcf:
     """Wrapper class to the Clinvar database in VCF format."""
 
     base_url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37"
