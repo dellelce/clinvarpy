@@ -32,7 +32,7 @@ class dnadata:
 class vcf:
     """Wrapper class to the Clinvar database in VCF format."""
 
-    base_url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37"
+    base_url = "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37"
 
     def process_file(self, name):
         """Process file in vcf format."""
@@ -56,11 +56,11 @@ class vcf:
 
         for line in vcf_raw:
             line_a = line.split()
-            if "#" in line[0]:
+            if b"#" in line_a[0]:
                 continue
 
             vcf_line = []
-            for i in [i.split(";") for i in line_a]:
+            for i in [i.split(b";") for i in line_a]:
                 vcf_line += i
 
             vcf.append(vcf_line)
@@ -78,7 +78,7 @@ class vcf:
             # remove ORIGIN=1, we consider it the default
             line_pos = 0
             for item in line:
-                if item == "ORIGIN=1":
+                if item == b"ORIGIN=1":
                     line.pop(line_pos)
 
                 line_pos += 1
@@ -98,10 +98,8 @@ class vcf:
     def latest(self):
         """Download latest available copy of clinvar database in vcf format."""
         import requests
-        import requests_ftp
         import gzip
 
-        requests_ftp.monkeypatch_session()
         with requests.Session() as sess:
             resp = sess.get(f"{self.base_url}/clinvar.vcf.gz")
 
